@@ -1,0 +1,21 @@
+{
+  "name": "interact-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter nyan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheInteract/interact-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheInteract/interact-node/issues"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
+}

@@ -1,61 +1,46 @@
-class User {
-  constructor (identity, hashedUserId, featureList = []) {
-    this.identity = identity
-    this.hashedUserId = hashedUserId
-    this.featureList = featureList.map(feature => (
-      new Feature(feature.name, feature.version)
-    ))
-  }
-
-  getHashedUserId = () => this.hashedUserId
-  getFeature = (featureName) => featureList[featureName]
-}
-
-class Feature {
-  constructor (version) { this.version = version }
-  isA = () => this.version === 'A'
-  isB = () => this.version === 'B'
-}
+const find = require('lodash/find')
+const User = require('./src/User')
+const getConfig = require('./src/getConfig')
+const config = require('config')
 
 const interact = {}
-
-getConfig = (customerCode, { identity, hashedUserId } = {}) => {
-  // request.js
-}
 
 interact.USERS = []
 
 interact.express = (customerCode, hashedUserId = '') => {
   return (request, response, next) => {
-    const identity = request.cookies['interact-unique-identity']
-    const { featureList, identity, initCode } = getConfig(customerCode, {
-      identity,
+    const currentDeviceCode = request.cookies[config.cookies.name]
+    const { featureList, deviceCode, initCode } = getConfig(customerCode, {
+      currentDeviceCode,
       hashedUserId
     })
 
-    interact.USERS.push(new User(identity, hashedUserId, featureList))
+    interact.USERS.push(new User(deviceCode, hashedUserId, featureList))
+    interact.INIT_CODE = initCode
 
-    if (!identity) request.cookies = `interact-unique-identity=${identity}`
+    if (!deviceCode) request.cookies = `${config.cookies.name}=${deviceCode}`
     next()
   }
 }
 
 interact.koa = (customerCode, hashedUserId = '') => {
   return (context, next) => {
-    const identity = context.headers.cookies['interact-unique-identity']
-    const { featureList, identity, initCode } = getConfig(customerCode, {
-      identity,
+    const currentDeviceCode = context.headers.cookies[config.cookies.name]
+    const { featureList, deviceCode, initCode } = getConfig(customerCode, {
+      currentDeviceCode,
       hashedUserId
     })
 
-    interact.USERS.push(new User(identity, hashedUserId, featureList))
-    if (!identity) context.setCookies = `interact-unique-identity=${identity}`
+    interact.USERS.push(new User(deviceCode, hashedUserId, featureList))
+    interact.INIT_CODE = initCode
+
+    if (!deviceCode) context.setCookies = `${config.cookies.name}=${deviceCode}`
     next()
   }
 }
 
 interact.findUser = (hashedUserId) => {
-  return _.find(interact.USERS, user => user.getHashedUserId() === hashedUserId)
+  return find(interact.USERS, user => user.getHashedUserId() === hashedUserId)
 }
 
-module.exports interact
+module.exports = interact

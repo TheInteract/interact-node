@@ -1,0 +1,4 @@
+server:
+  url: localhost:3000
+cookies:
+  name: interact-device-code

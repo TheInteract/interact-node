@@ -1,0 +1,12 @@
+sudo: required
+language: node_js
+node_js:
+- '6.9'
+- '6'
+- '5'
+install:
+- npm install
+script:
+- npm run test
+after_success:
+- npm run coverage

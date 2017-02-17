@@ -1,16 +1,18 @@
 const Feature = require('./Feature')
 
 class User {
-  constructor (identity, hashedUserId, featureList = []) {
-    this.identity = identity
+  constructor (deviceCode, hashedUserId, featureList = []) {
+    this.deviceCode = deviceCode
     this.hashedUserId = hashedUserId
-    this.featureList = featureList.map(feature => (
-      new Feature(feature.name, feature.version)
-    ))
+    this.featureList = featureList.reduce((list, feature) => {
+      list[feature.name] = new Feature(feature.name, feature.version)
+      return list
+    }, {})
   }
 
-  getFeature (featureName) { return this.featureList[featureName] }
+  getDeviceCode () { return this.deviceCode }
   getHashedUserId () { return this.hashedUserId }
+  getFeature (featureName) { return this.featureList[featureName] }
 }
 
 module.exports = User

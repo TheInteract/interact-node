@@ -1,4 +1,5 @@
-const _ = require('lodash')
+const omitBy = require('lodash/omitBy')
+const isUndefined = require('lodash/isUndefined')
 const RequestAsync = require('./RequestAsync')
 const config = require('config')
 
@@ -8,7 +9,7 @@ const getConfig = (customerCode, { deviceCode, hashedUserId } = {}) => {
     url: config.server.url,
     body: {
       customerCode: customerCode,
-      userIdentity: _.omitBy({ deviceCode, hashedUserId }, _.isUndefined)
+      userIdentity: omitBy({ deviceCode, hashedUserId }, isUndefined)
     }
   })
 }

@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const RequestAsync = require('./RequestAsync')
 const config = require('config')
 
@@ -7,10 +8,7 @@ const getConfig = (customerCode, { deviceCode, hashedUserId } = {}) => {
     url: config.server.url,
     body: {
       customerCode: customerCode,
-      userIdentity: {
-        deviceCode: deviceCode,
-        hashedUserId: hashedUserId,
-      }
+      userIdentity: _.omitBy({ deviceCode, hashedUserId }, _.isUndefined)
     }
   })
 }

@@ -58,7 +58,8 @@ describe('getConfig', () => {
           method: 'POST',
           url: config.server.url,
           body: {
-            customerCode: customerCode
+            customerCode: customerCode,
+            userIdentity: {}
           }
         })
         sinon.assert.calledOnce(RequestAsync.request)

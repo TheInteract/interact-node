@@ -10,32 +10,14 @@ interact.USERS = []
 interact.express = (customerCode, hashedUserId = '') => {
   return (request, response, next) => {
     const currentDeviceCode = request.cookies[config.cookies.name]
-    const { featureList, deviceCode, initCode } = getConfig(customerCode, {
-      currentDeviceCode,
-      hashedUserId
-    })
+    getConfig(customerCode, { currentDeviceCode, hashedUserId })
+      .then(({ featureList, deviceCode, initCode }) => {
+        interact.USERS.push(new User(deviceCode, hashedUserId, featureList))
+        interact.INIT_CODE = initCode
 
-    interact.USERS.push(new User(deviceCode, hashedUserId, featureList))
-    interact.INIT_CODE = initCode
-
-    if (!deviceCode) request.cookies = `${config.cookies.name}=${deviceCode}`
-    next()
-  }
-}
-
-interact.koa = (customerCode, hashedUserId = '') => {
-  return (context, next) => {
-    const currentDeviceCode = context.headers.cookies[config.cookies.name]
-    const { featureList, deviceCode, initCode } = getConfig(customerCode, {
-      currentDeviceCode,
-      hashedUserId
-    })
-
-    interact.USERS.push(new User(deviceCode, hashedUserId, featureList))
-    interact.INIT_CODE = initCode
-
-    if (!deviceCode) context.setCookies = `${config.cookies.name}=${deviceCode}`
-    next()
+        response.cookie(config.cookies.name, deviceCode)
+        next()
+      })
   }
 }
 

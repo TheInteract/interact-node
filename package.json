@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --reporter nyan src/*.spec.js",
     "test:prod": "mocha src/*.spec.js",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "example": "nodemon example/app.js",
     "mock:server": "nodemon example/mockServer.js"
   },

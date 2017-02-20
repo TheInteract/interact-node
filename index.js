@@ -11,11 +11,14 @@ interact.express = (customerCode, hashedUserId = '') => {
   return (request, response, next) => {
     const currentDeviceCode = request.cookies[config.cookies.name]
     getConfig(customerCode, { currentDeviceCode, hashedUserId })
-      .then(({ featureList, deviceCode, initCode }) => {
+      .then((result) => {
+        const { featureList, deviceCode, initCode } = result
         interact.USERS.push(new User(deviceCode, hashedUserId, featureList))
         interact.INIT_CODE = initCode
 
         response.cookie(config.cookies.name, deviceCode)
+      })
+      .finally(() => {
         next()
       })
   }

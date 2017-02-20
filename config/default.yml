@@ -1,4 +1,4 @@
 server:
-  url: http://localhost:3000/api/event/oninit
+  url: http://localhost:9000/api/event/oninit
 cookies:
   name: interact-device-code

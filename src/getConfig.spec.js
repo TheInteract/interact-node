@@ -1,3 +1,5 @@
+'use strict'
+
 const chai = require('chai')
 const getConfig = require('./getConfig')
 const RequestAsync = require('./RequestAsync')

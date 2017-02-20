@@ -1,3 +1,5 @@
+'use strict'
+
 const chai = require('chai')
 const Feature = require('./Feature')
 

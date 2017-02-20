@@ -1,3 +1,5 @@
+'use strict'
+
 const omitBy = require('lodash/omitBy')
 const isUndefined = require('lodash/isUndefined')
 const RequestAsync = require('./RequestAsync')

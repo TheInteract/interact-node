@@ -10,7 +10,8 @@ interact.USERS = []
 interact.express = (customerCode, hashedUserId = '') => {
   return (request, response, next) => {
     const currentDeviceCode = request.cookies[config.cookies.name]
-    getConfig(customerCode, { currentDeviceCode, hashedUserId })
+    console.log(currentDeviceCode)
+    getConfig(customerCode, { deviceCode: currentDeviceCode, hashedUserId })
       .then((result) => {
         const { featureList, deviceCode, initCode } = result
         interact.USERS.push(new User(deviceCode, hashedUserId, featureList))

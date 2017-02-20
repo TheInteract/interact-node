@@ -4,7 +4,7 @@ var cookieParser = require('cookie-parser')
 
 var app = express()
 app.use(cookieParser())
-app.use(interact.express('IC9-55938-5', 'hashed-1234'))
+app.use(interact.express('IC9-55938-6', 'hashed-1234'))
 
 app.get('/', function (request, response) {
   // Cookies that have not been signed

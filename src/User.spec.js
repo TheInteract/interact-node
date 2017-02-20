@@ -1,3 +1,5 @@
+'use strict'
+
 const chai = require('chai')
 const User = require('./User')
 const Feature = require('./Feature')

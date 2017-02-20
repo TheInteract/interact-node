@@ -1,3 +1,5 @@
+'use strict'
+
 const omitBy = require('lodash/omitBy')
 const isUndefined = require('lodash/isUndefined')
 const RequestAsync = require('./RequestAsync')
@@ -10,8 +12,11 @@ const getConfig = (customerCode, { deviceCode, hashedUserId } = {}) => {
     body: {
       customerCode: customerCode,
       userIdentity: omitBy({ deviceCode, hashedUserId }, isUndefined)
-    }
+    },
+    json: true,
+    timeout: 10000
   })
+    .then(result => result.body)
 }
 
 module.exports = getConfig

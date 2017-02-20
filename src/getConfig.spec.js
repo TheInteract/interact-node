@@ -1,3 +1,5 @@
+'use strict'
+
 const chai = require('chai')
 const getConfig = require('./getConfig')
 const RequestAsync = require('./RequestAsync')
@@ -21,9 +23,11 @@ describe('getConfig', () => {
   beforeEach(() => {
     sinon.stub(RequestAsync, 'request')
       .returns(Promise.resolve({
-        featureList: cloneDeep(mockFeature),
-        identity: mockIdentity,
-        initCode: mockInitCode,
+        body: {
+          featureList: cloneDeep(mockFeature),
+          identity: mockIdentity,
+          initCode: mockInitCode,
+        }
       }))
   })
 
@@ -43,7 +47,9 @@ describe('getConfig', () => {
               deviceCode: deviceCode,
               hashedUserId: hashedUserId,
             }
-          }
+          },
+          json: true,
+          timeout: 10000
         })
         sinon.assert.calledOnce(RequestAsync.request)
       })
@@ -60,7 +66,9 @@ describe('getConfig', () => {
           body: {
             customerCode: customerCode,
             userIdentity: {}
-          }
+          },
+          json: true,
+          timeout: 10000
         })
         sinon.assert.calledOnce(RequestAsync.request)
       })
@@ -71,11 +79,11 @@ describe('getConfig', () => {
   it('should return featureList, identity and initCode', (done) => {
     getConfig(customerCode, { deviceCode, hashedUserId })
       .then(result => {
-        chai.assert.deepEqual({
+        chai.assert.deepEqual(result, {
           featureList: cloneDeep(mockFeature),
           identity: mockIdentity,
           initCode: mockInitCode,
-        }, result)
+        })
         sinon.assert.calledOnce(RequestAsync.request)
       })
       .then(() => { done() })

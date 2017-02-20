@@ -1,3 +1,5 @@
+'use strict'
+
 class Feature {
   constructor (name, version) {
     this.name = name

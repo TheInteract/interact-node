@@ -1,3 +1,5 @@
+'use strict'
+
 const Feature = require('./Feature')
 
 class User {
